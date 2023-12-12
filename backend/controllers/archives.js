@@ -25,7 +25,7 @@ const clearAll=async(req,res)=>{
     const filepath= path.join(directory,filename);
     try{
         const file = await fs.readFile(filepath);
-        console.log(file)
+        // console.log(file)
         res.setHeader('Content-Type','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         res.setHeader('Content-Disposition',`attachment; filename=${filename}`)
         res.send(file)
