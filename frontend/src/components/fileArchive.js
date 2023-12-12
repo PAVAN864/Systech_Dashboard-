@@ -116,9 +116,13 @@ const Archive = () => {
       if (responseData.files && Array.isArray(responseData.files)) {
         const files = await Promise.all(responseData.files.map(async (fileName) => {
           try {
-            const fileResponse = await fetch(`${ENV.API_URL}/archives/uploads/${folderName}/${fileName}`);
+            const fileResponse = await fetch(`${ENV.API_URL}/archives/uploads/${folderName}/${fileName}`, {
+              headers: {
+                'Content-Type': 'application/octet-stream', // Set content type to binary
+              },
+              responseType: 'blob', // Specify responseType as 'blob'
+            });
             const fileContent = await fileResponse.arrayBuffer();
-            console.log(fileContent)
             return { fileName, fileContent };
           } catch (fileError) {
             console.error(`Error fetching file ${fileName} for ${folderName}:`, fileError);
@@ -180,7 +184,8 @@ const Archive = () => {
                 {files.map(({ fileName, fileContent }, innerFileIndex) => (
                   <li key={innerFileIndex}>
                     <a
-                      href={`data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${btoa(String.fromCharCode.apply(null,new Uint8Array(fileContent)))}`} download="download.xlsx"
+                      href={`data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${btoa(String.fromCharCode.apply(null,new Uint8Array(fileContent)))}`}
+                      download={`${fileName}.xlsx`}
                     >
                       {fileName}
                     </a>
@@ -199,6 +204,7 @@ const Archive = () => {
 };
 
 export default Archive;
+
 
 // import XLSX from 'xlsx'
 // import axios from 'axios'
