@@ -116,7 +116,7 @@ const Archive = () => {
       if (responseData.files && Array.isArray(responseData.files)) {
         const files = await Promise.all(responseData.files.map(async (fileName) => {
           try {
-            const fileResponse = await fetch(`${ENV.API_URL}/archives/uploads/${folderName}/${fileName}`, {
+            const fileResponse = await fetch(`${ENV.API_URL}/file/${fileName}`, {
               headers: {
                 'Content-Type': 'application/octet-stream', // Set content type to binary
               },
